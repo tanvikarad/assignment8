@@ -4,6 +4,13 @@ import pytest  # Import the pytest framework for writing and running tests
 
 # The following decorators and functions define E2E tests for the FastAPI calculator application.
 
+def wait_for_result(page, expected):
+    page.wait_for_function(
+        "(expected) => document.querySelector('#result').innerText === expected",
+        arg=expected,
+    )
+
+
 @pytest.mark.e2e
 def test_hello_world(page, fastapi_server):
     # Navigate the browser to the homepage URL of the FastAPI application.
@@ -29,6 +36,7 @@ def test_calculator_add(page, fastapi_server):
     
     # Use an assertion to check that the text within the result div (with id 'result') is exactly "Result: 15".
     # This verifies that the addition operation was performed correctly and the result is displayed as expected.
+    wait_for_result(page, 'Calculation Result: 15')
     assert page.inner_text('#result') == 'Calculation Result: 15'
 
 
@@ -48,6 +56,7 @@ def test_calculator_subtract(page, fastapi_server):
     
     # Use an assertion to check that the text within the result div (with id 'result') is exactly "Result: 5".
     # This verifies that the subtraction operation was performed correctly and the result is displayed as expected.
+    wait_for_result(page, 'Calculation Result: 5')
     assert page.inner_text('#result') == 'Calculation Result: 5'
 
 
@@ -66,6 +75,7 @@ def test_calculator_multiply(page, fastapi_server):
     
     # Use an assertion to check that the text within the result div (with id 'result') is exactly "Result: 15".
     # This verifies that the multiply operation was performed correctly and the result is displayed as expected.
+    wait_for_result(page, 'Calculation Result: 50')
     assert page.inner_text('#result') == 'Calculation Result: 50'
 
 
@@ -84,6 +94,7 @@ def test_calculator_divide(page, fastapi_server):
     
     # Use an assertion to check that the text within the result div (with id 'result') is exactly "Result: 2.0".
     # This verifies that the division operation was performed correctly and the result is displayed as expected.
+    wait_for_result(page, 'Calculation Result: 2')
     assert page.inner_text('#result') == 'Calculation Result: 2'
 
 def test_calculator_add_negative(page, fastapi_server):
@@ -101,6 +112,7 @@ def test_calculator_add_negative(page, fastapi_server):
     
     # Use an assertion to check that the text within the result div (with id 'result') is exactly "Result: 15".
     # This verifies that the addition operation was performed correctly and the result is displayed as expected.
+    wait_for_result(page, 'Calculation Result: 5')
     assert page.inner_text('#result') == 'Calculation Result: 5'
 
 def test_calculator_subtract_negative(page, fastapi_server):
@@ -118,6 +130,7 @@ def test_calculator_subtract_negative(page, fastapi_server):
     
     # Use an assertion to check that the text within the result div (with id 'result') is exactly "Result: 15".
     # This verifies that the subtraction operation was performed correctly and the result is displayed as expected.
+    wait_for_result(page, 'Calculation Result: 15')
     assert page.inner_text('#result') == 'Calculation Result: 15'
 
 def test_calculator_add_two_negatives(page, fastapi_server):
@@ -135,6 +148,7 @@ def test_calculator_add_two_negatives(page, fastapi_server):
     
     # Use an assertion to check that the text within the result div (with id 'result') is exactly "Result: 15".
     # This verifies that the addition operation was performed correctly and the result is displayed as expected.
+    wait_for_result(page, 'Calculation Result: -15')
     assert page.inner_text('#result') == 'Calculation Result: -15'
 
 def test_calculator_subtract_two_negatives(page, fastapi_server):
@@ -152,6 +166,7 @@ def test_calculator_subtract_two_negatives(page, fastapi_server):
     
     # Use an assertion to check that the text within the result div (with id 'result') is exactly "Result: 15".
     # This verifies that the subtraction operation was performed correctly and the result is displayed as expected.
+    wait_for_result(page, 'Calculation Result: -5')
     assert page.inner_text('#result') == 'Calculation Result: -5'
 
 
@@ -170,6 +185,7 @@ def test_calculator_multiply_two_negatives(page, fastapi_server):
     
     # Use an assertion to check that the text within the result div (with id 'result') is exactly "Result: 15".
     # This verifies that the multiply operation was performed correctly and the result is displayed as expected.
+    wait_for_result(page, 'Calculation Result: 50')
     assert page.inner_text('#result') == 'Calculation Result: 50'
 
 
@@ -188,6 +204,7 @@ def test_calculator_multiply_negative_and_positive(page, fastapi_server):
     
     # Use an assertion to check that the text within the result div (with id 'result') is exactly "Result: 15".
     # This verifies that the multiply operation was performed correctly and the result is displayed as expected.
+    wait_for_result(page, 'Calculation Result: -50')
     assert page.inner_text('#result') == 'Calculation Result: -50'
 
 
@@ -207,6 +224,7 @@ def test_calculator_divide_negative(page, fastapi_server):
     
     # Use an assertion to check that the text within the result div (with id 'result') is exactly "Result: 2.0".
     # This verifies that the division operation was performed correctly and the result is displayed as expected.
+    wait_for_result(page, 'Calculation Result: -2')
     assert page.inner_text('#result') == 'Calculation Result: -2'
 
 
@@ -226,6 +244,7 @@ def test_calculator_divide_two_negatives(page, fastapi_server):
     
     # Use an assertion to check that the text within the result div (with id 'result') is exactly "Result: 2.0".
     # This verifies that the division operation was performed correctly and the result is displayed as expected.
+    wait_for_result(page, 'Calculation Result: 2')
     assert page.inner_text('#result') == 'Calculation Result: 2'
 
 
@@ -246,4 +265,5 @@ def test_calculator_divide_by_zero(page, fastapi_server):
     # Use an assertion to check that the text within the result div (with id 'result') is exactly
     # "Error: Cannot divide by zero!". This verifies that the application handles division by zero
     # gracefully and displays the correct error message to the user.
+    wait_for_result(page, 'Error: Cannot divide by zero!')
     assert page.inner_text('#result') == 'Error: Cannot divide by zero!'
